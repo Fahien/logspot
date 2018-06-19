@@ -1,4 +1,5 @@
-#include "Logger.h"
+#include <string>
+#include "logspot/Logger.h"
 
 #ifdef LST_LOGGING
 	#ifdef ANDROID
@@ -15,7 +16,7 @@ using namespace logspot;
 Logger Logger::log{};
 
 
-void Logger::vinfo(const char*
+void Logger::vinfo(const std::string&
 	#ifdef LST_LOGGING
 		fmt
 	#endif
@@ -27,15 +28,15 @@ void Logger::vinfo(const char*
 {
 #ifdef LST_LOGGING
 	#ifdef ANDROID
-		__android_log_vprint(ANDROID_LOG_VERBOSE, LOG_TAG, fmt, args);
+		__android_log_vprint(ANDROID_LOG_VERBOSE, LOG_TAG, fmt.c_str(), args);
 	#else // other systems
-		vfprintf(stdout, fmt, args);
+		vfprintf(stdout, (fmt + "\n").c_str(), args);
 	#endif // ANDROID
 #endif // LST_LOGGING
 }
 
 
-void Logger::info(const char*
+void Logger::Info(const char*
 	#ifdef LST_LOGGING
 		fmt
 	#endif
@@ -50,7 +51,22 @@ void Logger::info(const char*
 }
 
 
-void Logger::verror(const char*
+void Logger::Info(const std::string
+	#ifdef LST_LOGGING
+		fmt
+	#endif
+	, ...) const
+{
+#ifdef LST_LOGGING
+	std::va_list args;
+	va_start(args, fmt);
+	vinfo(fmt, args);
+	va_end(args);
+#endif // LST_LOGGING
+}
+
+
+void Logger::verror(const std::string&
 	#ifdef LST_LOGGING
 		fmt
 	#endif
@@ -62,15 +78,30 @@ void Logger::verror(const char*
 {
 #ifdef LST_LOGGING
 	#ifdef ANDROID
-		__android_log_vprint(ANDROID_LOG_ERROR, LOG_TAG, fmt, args);
+		__android_log_vprint(ANDROID_LOG_ERROR, LOG_TAG, fmt.c_str(), args);
 	#else // other systems
-		vfprintf(stderr, fmt, args);
+		vfprintf(stderr, (fmt + "\n").c_str(), args);
 	#endif // ANDROID
 #endif // LST_LOGGING
 }
 
 
-void Logger::error(const char*
+void Logger::Error(const char*
+	#ifdef LST_LOGGING
+		fmt
+	#endif
+	, ...) const
+{
+#ifdef LST_LOGGING
+	std::va_list args;
+	va_start(args, fmt);
+	verror(fmt, args);
+	va_end(args);
+#endif // LST_LOGGING
+}
+
+
+void Logger::Error(const std::string
 	#ifdef LST_LOGGING
 		fmt
 	#endif

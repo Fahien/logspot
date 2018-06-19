@@ -1,14 +1,13 @@
 #include <cstdlib>
+#include <logspot/Logger.h>
 
-#include "Logger.h"
-
-namespace lsp = logspot;
+namespace lst = logspot;
 
 
 int main()
 {
-	lsp::Logger::log.info("%s, %d, %f", "a", 2, 3.0f);
-	lsp::Logger::log.error("%s, %d, %f", "b", 3, 4.0f);
+	lst::Logger::log.Info("%s, %d, %f", "a", 2, 3.0f);
+	lst::Logger::log.Error("%s, %d, %f", "b", 3, 4.0f);
 
 	return EXIT_SUCCESS;
 }

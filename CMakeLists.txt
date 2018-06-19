@@ -15,9 +15,19 @@ if(${LST_LOGGING})
 	add_definitions(-DLST_LOGGING)
 endif()
 
-# Includes
-set(LST_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
-include_directories(${LST_INCLUDE_DIR})
+# Includes and Libs
+set(LST_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include)
+set(LST_LIBRARIES ${LST_NAME})
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Android")
+	if(NOT DEFINED NDK_DIR)
+		message(FATAL_ERROR "NDK_DIR not set")
+	endif()
+	set(LST_INCLUDE_DIRS ${LST_INCLUDE_DIRS} ${NDK_DIR}/sysroot/usr/include)
+	set(LST_LIBRARIES ${LST_LIBRARIES} log)
+endif()
+
+include_directories(${LST_INCLUDE_DIRS})
 
 # Sources
 set(LST_SOURCE_DIR ${PROJECT_SOURCE_DIR}/source)
@@ -26,6 +36,7 @@ source_group(Source FILES ${SOURCES})
 
 # Library
 add_library(${LST_NAME} ${SOURCES})
+target_include_directories(${LST_NAME} PUBLIC ${LST_INCLUDE_DIRS})
 set_target_properties(${LST_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
 # Test
