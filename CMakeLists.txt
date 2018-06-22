@@ -20,10 +20,7 @@ set(LST_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include)
 set(LST_LIBRARIES ${LST_NAME})
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Android")
-	if(NOT DEFINED NDK_DIR)
-		message(FATAL_ERROR "NDK_DIR not set")
-	endif()
-	set(LST_INCLUDE_DIRS ${LST_INCLUDE_DIRS} ${NDK_DIR}/sysroot/usr/include)
+	set(LST_INCLUDE_DIRS ${LST_INCLUDE_DIRS} ${CMAKE_ANDROID_NDK}/sysroot/usr/include)
 	set(LST_LIBRARIES ${LST_LIBRARIES} log)
 endif()
 
