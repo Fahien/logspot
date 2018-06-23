@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 3.6)
-set(LST_TITLE LogSpoT)
-project(${LST_TITLE})
 
 set(CMAKE_C_STANDARD   11)
 set(CMAKE_CXX_STANDARD 11)
 
+set(LST_TITLE LogSpot)
+project(${LST_TITLE} C CXX)
+
 # Version number
 set(LST_VERSION_MAJOR 0)
-set(LST_VERSION_MINOR 1)
+set(LST_VERSION_MINOR 2)
 set(LST_NAME logspot)
 
 # Settings
@@ -18,13 +19,10 @@ endif()
 # Includes and Libs
 set(LST_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include)
 set(LST_LIBRARIES ${LST_NAME})
-
 if(${CMAKE_SYSTEM_NAME} MATCHES "Android")
 	set(LST_INCLUDE_DIRS ${LST_INCLUDE_DIRS} ${CMAKE_ANDROID_NDK}/sysroot/usr/include)
 	set(LST_LIBRARIES ${LST_LIBRARIES} log)
 endif()
-
-include_directories(${LST_INCLUDE_DIRS})
 
 # Sources
 set(LST_SOURCE_DIR ${PROJECT_SOURCE_DIR}/source)
@@ -34,7 +32,6 @@ source_group(Source FILES ${SOURCES})
 # Library
 add_library(${LST_NAME} ${SOURCES})
 target_include_directories(${LST_NAME} PUBLIC ${LST_INCLUDE_DIRS})
-set_target_properties(${LST_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
 # Test
 set(LST_TEST_DIR ${PROJECT_SOURCE_DIR}/test)
