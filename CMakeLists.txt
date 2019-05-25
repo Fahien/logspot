@@ -1,14 +1,12 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.8)
 
 set(CMAKE_C_STANDARD   11)
-set(CMAKE_CXX_STANDARD 11)
-
-set(LST_TITLE LogSpot)
+set(LST_TITLE Logspot)
 project(${LST_TITLE} C CXX)
 
 # Version number
 set(LST_VERSION_MAJOR 0)
-set(LST_VERSION_MINOR 2)
+set(LST_VERSION_MINOR 3)
 set(LST_NAME logspot)
 
 # Settings
@@ -17,7 +15,7 @@ if(${LST_LOGGING})
 endif()
 
 # Includes and Libs
-set(LST_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include)
+set(LST_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(LST_LIBRARIES ${LST_NAME})
 if(${CMAKE_SYSTEM_NAME} MATCHES "Android")
 	set(LST_INCLUDE_DIRS ${LST_INCLUDE_DIRS} ${CMAKE_ANDROID_NDK}/sysroot/usr/include)
@@ -25,15 +23,16 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Android")
 endif()
 
 # Sources
-set(LST_SOURCE_DIR ${PROJECT_SOURCE_DIR}/source)
-set(SOURCES ${LST_SOURCE_DIR}/Logger.cpp)
+set(LST_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(SOURCES ${LST_SOURCE_DIR}/Log.cpp)
 source_group(Source FILES ${SOURCES})
 
 # Library
 add_library(${LST_NAME} ${SOURCES})
+target_compile_features( ${LST_NAME} PRIVATE cxx_std_17 )
 target_include_directories(${LST_NAME} PUBLIC ${LST_INCLUDE_DIRS})
 
 # Test
-set(LST_TEST_DIR ${PROJECT_SOURCE_DIR}/test)
+set(LST_TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/test)
 include(${LST_TEST_DIR}/Tests.cmake)
 include(CTest)
